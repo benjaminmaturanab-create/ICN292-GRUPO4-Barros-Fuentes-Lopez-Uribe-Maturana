@@ -1,6 +1,6 @@
-# ICN-292 — Propuesta de SIG: Electroliko / LapicaOnline ("Eliko")
+# ICN-292 — Propuesta de SIG: Electroliko | LapicaOnline ("Eliko")
 
-**Universidad Técnica Federico Santa María — Campus Vitacura — Paralelo 100**
+**Universidad Técnica Federico Santa María | Campus Vitacura | Paralelo 100**
 
 ## ¿Qué PYME y qué problema?
 
