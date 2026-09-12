@@ -24,11 +24,11 @@ La Entrega 1 dejó el **diagnóstico y el diseño** del SIG; la Entrega 2 consis
 
 | En la Entrega 1 definimos... | En la Entrega 2 se convierte en... |
 |---|---|
-| Requisitos funcionales (RF01–RF09, Sección C) | Consultas de negocio y pantallas de la interfaz que implementan cada RF |
-| BPMN to-be (Sección D), con el carril "Sistema de gestión SIG" | Automatización de proceso (n8n u homóloga) conectada al flujo real |
-| Modelo entidad-relación preliminar (Sección E) | Modelo normalizado a 3FN, materializado en `db/schema.sql` y poblado con `db/seed.sql` |
-| Arquitectura lógica y stack tentativo (Sección F) | Implementación reproducible en localhost (contenedores o entorno documentado) |
-| Plan de hitos H1–H8 (Sección G) | Cronograma real de desarrollo hacia la Entrega 2 |
+| Requisitos funcionales (RF01–RF09) | Consultas de negocio y pantallas de la interfaz que implementan cada RF |
+| BPMN to-be , con el carril "Sistema de gestión SIG" | Automatización de proceso (n8n u homóloga) conectada al flujo real |
+| Modelo entidad-relación preliminar | Modelo normalizado a 3FN, materializado en `db/schema.sql` y poblado con `db/seed.sql` |
+| Arquitectura lógica y stack tentativo | Implementación reproducible en localhost (contenedores o entorno documentado) |
+| Plan de hitos H1–H8 | Cronograma real de desarrollo hacia la Entrega 2 |
 | Riesgo de datos personales (Ley 21.719) | Medidas de gobernanza de datos aplicadas y documentadas en `docs/07-etica-ley-21719.md` |
 
 En síntesis, la Entrega 2 debe demostrar —de forma auditable y reproducible por el docente clonando este repositorio— que la propuesta de la Entrega 1 funciona con datos reales: base de datos consultable, al menos 3 consultas de negocio, un tablero de KPI alineado al problema de Eliko, y la automatización del proceso to-be.
