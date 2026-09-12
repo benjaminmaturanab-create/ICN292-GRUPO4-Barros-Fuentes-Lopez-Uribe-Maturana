@@ -22,7 +22,7 @@ El problema central es que **no tienen inventario**. El stock se controla visual
 
 La Entrega 1 dejó el **diagnóstico y el diseño** del SIG; la Entrega 2 consiste en **construir y levantar en localhost** esa misma propuesta, manteniendo el mismo caso PYME y el mismo equipo. La relación concreta entre ambas entregas es:
 
-| En la Entrega 1 definimos... | En la Entrega 2 se convierte en... |
+| En la Entrega 1 definimos | En la Entrega 2 se convierte en |
 |---|---|
 | Requisitos funcionales (RF01–RF09) | Consultas de negocio y pantallas de la interfaz que implementan cada RF |
 | BPMN to-be , con el carril "Sistema de gestión SIG" | Automatización de proceso (n8n u homóloga) conectada al flujo real |
