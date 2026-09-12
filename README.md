@@ -18,17 +18,20 @@ El problema central es que **no tienen inventario**. El stock se controla visual
 | Alonso López | 202360535-2 |
 | Maximiliano Uribe | 202360533-6 |
 
-## Cómo se relaciona con la Entrega 2
+## Relación con la Entrega 2
 
-La Entrega 1 dejó el **diagnóstico y el diseño** del SIG; la Entrega 2 consiste en **construir y levantar en localhost** esa misma propuesta, manteniendo el mismo caso PYME y el mismo equipo. La relación concreta entre ambas entregas es:
+La Entrega 1 es el diagnóstico y diseño del sistema. La Entrega 2 es 
+construirlo y dejarlo funcionando en localhost, con el mismo caso y el 
+mismo equipo.
 
-| En la Entrega 1 definimos | En la Entrega 2 se convierte en |
-|---|---|
-| Requisitos funcionales (RF01–RF09) | Consultas de negocio y pantallas de la interfaz que implementan cada RF |
-| BPMN to-be , con el carril "Sistema de gestión SIG" | Automatización de proceso (n8n u homóloga) conectada al flujo real |
-| Modelo entidad-relación preliminar | Modelo normalizado a 3FN, materializado en `db/schema.sql` y poblado con `db/seed.sql` |
-| Arquitectura lógica y stack tentativo | Implementación reproducible en localhost (contenedores o entorno documentado) |
-| Plan de hitos H1–H8 | Cronograma real de desarrollo hacia la Entrega 2 |
-| Riesgo de datos personales (Ley 21.719) | Medidas de gobernanza de datos aplicadas y documentadas en `docs/07-etica-ley-21719.md` |
+Lo que diseñamos acá se convierte en esto para la E2: los requisitos 
+funcionales pasan a ser pantallas reales y consultas SQL; el BPMN to-be 
+se conecta a una automatización de procesos; el modelo ER preliminar se 
+normaliza y se materializa en una base de datos con datos reales de Eliko; 
+y la arquitectura tentativa se implementa para que cualquiera pueda 
+levantar el sistema localmente.
 
-La Entrega 2 debe demostrar de forma auditable y reproducible por el docente clonando este repositorio que la propuesta de la Entrega 1 funciona con datos reales: base de datos consultable, al menos 3 consultas de negocio, un tablero de KPI alineado al problema de Eliko, y la automatización del proceso to-be.
+El docente debe poder clonar este repositorio, seguir el README y ver 
+el sistema funcionando: base de datos consultable, al menos 3 consultas 
+de negocio, un tablero KPI alineado al problema de inventario de Eliko, 
+y la automatización del proceso to-be documentada.
