@@ -31,4 +31,4 @@ La Entrega 1 dejó el **diagnóstico y el diseño** del SIG; la Entrega 2 consis
 | Plan de hitos H1–H8 | Cronograma real de desarrollo hacia la Entrega 2 |
 | Riesgo de datos personales (Ley 21.719) | Medidas de gobernanza de datos aplicadas y documentadas en `docs/07-etica-ley-21719.md` |
 
-En síntesis, la Entrega 2 debe demostrar —de forma auditable y reproducible por el docente clonando este repositorio— que la propuesta de la Entrega 1 funciona con datos reales: base de datos consultable, al menos 3 consultas de negocio, un tablero de KPI alineado al problema de Eliko, y la automatización del proceso to-be.
+La Entrega 2 debe demostrar de forma auditable y reproducible por el docente clonando este repositorio que la propuesta de la Entrega 1 funciona con datos reales: base de datos consultable, al menos 3 consultas de negocio, un tablero de KPI alineado al problema de Eliko, y la automatización del proceso to-be.
