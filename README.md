@@ -18,6 +18,19 @@ El problema central es que **no tienen inventario**. El stock se controla visual
 | Alonso López | 202360535-2 |
 | Maximiliano Uribe | 202360533-6 |
 
+## Estructura del repositorio
+
+```
+assets/          # Diagramas exportados (BPMN as-is, to-be, ER)
+docs/            # Documentación del proyecto en markdown
+  00-caso-pyme.md
+  01-requerimientos.md
+  02-bpmn.md
+  03-er-preliminar.md
+informe/         # Informe completo en PDF y LaTeX
+README.md        # Este archivo
+```
+
 ## Relación con la Entrega 2
 
 La Entrega 1 es el diagnóstico y diseño del sistema. La Entrega 2 es 
