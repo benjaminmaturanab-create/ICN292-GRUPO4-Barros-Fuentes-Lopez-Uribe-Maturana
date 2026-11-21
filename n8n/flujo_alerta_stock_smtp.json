@@ -1,0 +1,208 @@
+{
+  "id": "ElikoAlertaStockSMTP",
+  "name": "Eliko — Alerta de stock bajo mínimo (SMTP)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "8e572e1f-fdf9-41d1-8c50-6e1a933203e6",
+      "name": "Ejecución manual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "4e6a14d5-45e8-4a1f-86d9-ad9025fb55c1",
+      "name": "Todos los días 09:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "command": "python \"C:/RUTA/AL/REPO/ICN292-GRUPO4-Barros-Fuentes-Lopez-Uribe-Maturana/scripts/alertas_stock.py\""
+      },
+      "id": "1d638429-878a-4321-85fa-9e574104dd5b",
+      "name": "Consultar stock bajo mínimo (SQLite)",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        240,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Convierte la salida del script Python en un mensaje listo para enviar\nconst r = JSON.parse($input.first().json.stdout);\nconst filas = r.productos.map(p =>\n  `<tr><td>${p.codigo}</td><td>${p.nombre}</td><td>${p.categoria}</td>` +\n  `<td style=\"text-align:right\">${p.stock_actual}</td>` +\n  `<td style=\"text-align:right\">${p.stock_minimo}</td>` +\n  `<td style=\"text-align:right\"><b>${p.deficit}</b></td></tr>`).join('');\nconst html =\n  `<p>Hola Alejandro,</p>` +\n  `<p>El sistema de inventario detectó <b>${r.total_alertas}</b> producto(s) bajo su stock mínimo ` +\n  `(revisión del ${r.fecha_consulta}). Se necesitan <b>${r.deficit_total}</b> unidades para recuperar los mínimos.</p>` +\n  `<table border=\"1\" cellpadding=\"4\" cellspacing=\"0\">` +\n  `<tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Stock</th><th>Mínimo</th><th>Déficit</th></tr>` +\n  filas + `</table>` +\n  `<p>Ordenados por déficit: los primeros son los más urgentes de reponer.</p>` +\n  `<p>— Sistema de Inventario Eliko</p>`;\nreturn [{ json: {\n  fecha_consulta: r.fecha_consulta,\n  total_alertas: r.total_alertas,\n  deficit_total: r.deficit_total,\n  asunto: `[Eliko] ${r.total_alertas} producto(s) bajo stock mínimo`,\n  html\n}}];"
+      },
+      "id": "3dc44e1c-0df6-437d-a351-e35d2b37992a",
+      "name": "Armar mensaje de alerta",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "c7878f14-07d6-44a8-abf0-0fc6a08aa4d7",
+              "leftValue": "={{ $json.total_alertas }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "b53d3a6a-e3fe-429d-9fb3-5163cf82166f",
+      "name": "¿Stock bajo mínimo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        720,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "fromEmail": "TU_CORREO@gmail.com",
+        "toEmail": "CORREO_DESTINO@ejemplo.cl",
+        "subject": "={{ $json.asunto }}",
+        "emailFormat": "html",
+        "html": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "8d05c6bd-7146-4162-8a55-8b7e249a929e",
+      "name": "Enviar alerta por correo (SMTP)",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "4768b4b3-9ffc-4414-801e-735944846f7e",
+      "name": "Sin alertas: fin",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        960,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Traza BPMN\nEste flujo implementa la salida **Sí** del gateway XOR **¿Stock bajo mínimo?** y la tarea **Generar alerta** del carril *Sistema de Inventario*.\n\nLee `eliko.db` con `scripts/alertas_stock.py` (Consulta 2 de consultas_analiticas.sql).",
+        "height": 220,
+        "width": 420
+      },
+      "id": "dca5b874-b54f-45bb-99ff-f4d3b0414ed4",
+      "name": "Nota BPMN",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        -280
+      ]
+    }
+  ],
+  "connections": {
+    "Ejecución manual": {
+      "main": [
+        [
+          {
+            "node": "Consultar stock bajo mínimo (SQLite)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Todos los días 09:00": {
+      "main": [
+        [
+          {
+            "node": "Consultar stock bajo mínimo (SQLite)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Consultar stock bajo mínimo (SQLite)": {
+      "main": [
+        [
+          {
+            "node": "Armar mensaje de alerta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Armar mensaje de alerta": {
+      "main": [
+        [
+          {
+            "node": "¿Stock bajo mínimo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Stock bajo mínimo?": {
+      "main": [
+        [
+          {
+            "node": "Enviar alerta por correo (SMTP)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sin alertas: fin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "tags": []
+}

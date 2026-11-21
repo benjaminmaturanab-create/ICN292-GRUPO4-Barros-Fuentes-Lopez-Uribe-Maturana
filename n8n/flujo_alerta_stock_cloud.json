@@ -1,0 +1,214 @@
+{
+  "id": "ElikoAlertaCloud",
+  "name": "Eliko — Alerta de stock bajo mínimo (n8n Cloud)",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "c27ab0a9-e801-45dd-ac04-dfb9d591c013",
+      "name": "Ejecución manual",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 9
+            }
+          ]
+        }
+      },
+      "id": "3f31b4b5-94a3-4a84-8026-60d0b400cd7d",
+      "name": "Todos los días 09:00",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/benjaminmaturanab-create/ICN292-GRUPO4-Barros-Fuentes-Lopez-Uribe-Maturana/main/seed.sql",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "8fe6f4c3-db47-4e51-808b-4483035f2d5f",
+      "name": "Leer base de datos (seed.sql en GitHub)",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        240,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Calcula las alertas de reposición a partir de seed.sql (repositorio del proyecto).\n// Replica la Consulta 2 de consultas_analiticas.sql:\n//   WHERE stock_minimo IS NOT NULL AND stock_actual < stock_minimo\n//   ORDER BY unidades_a_reponer DESC\nconst sql = $input.first().json.data;\n\n// Lee los valores de un INSERT ... VALUES(...): textos entre comillas, números o NULL\nfunction leerValores(s) {\n  const out = [];\n  let i = 0;\n  while (i < s.length) {\n    while (s[i] === ' ' || s[i] === ',') i++;\n    if (i >= s.length) break;\n    if (s[i] === \"'\") {\n      let v = '';\n      i++;\n      while (i < s.length) {\n        if (s[i] === \"'\") {\n          if (s[i + 1] === \"'\") { v += \"'\"; i += 2; continue; } // comilla escapada\n          i++;\n          break;\n        }\n        v += s[i++];\n      }\n      out.push(v);\n    } else {\n      let j = i;\n      while (j < s.length && s[j] !== ',') j++;\n      const t = s.slice(i, j).trim();\n      out.push(t === 'NULL' ? null : Number(t));\n      i = j;\n    }\n  }\n  return out;\n}\n\nconst filas = { categoria: [], producto: [], inventario: [] };\nconst re = /^INSERT INTO (categoria|producto|inventario) VALUES\\((.*)\\);\\s*$/gm;\nlet m;\nwhile ((m = re.exec(sql)) !== null) filas[m[1]].push(leerValores(m[2]));\n\nconst categorias = Object.fromEntries(filas.categoria.map(([id, nombre]) => [id, nombre]));\nconst productos = Object.fromEntries(filas.producto.map(([sku, nombre, idCat]) => [sku, { nombre, categoria: categorias[idCat] }]));\n\n// inventario: (id_registro, sku, stock_actual, stock_minimo, fecha_actualizacion, comentario)\nconst alertas = filas.inventario\n  .filter(([, , actual, minimo]) => minimo !== null && actual < minimo)\n  .map(([, sku, actual, minimo]) => ({\n    codigo: sku,\n    nombre: productos[sku].nombre,\n    categoria: productos[sku].categoria,\n    stock_actual: actual,\n    stock_minimo: minimo,\n    deficit: minimo - actual,\n  }))\n  .sort((a, b) => b.deficit - a.deficit);\n\n// Contexto adicional para el correo (mismas definiciones que Consultas 1 y 5)\nconst agotados = filas.inventario.filter(([, , actual]) => actual === 0).length;\nconst criticosSinUmbral = filas.inventario.filter(([, , actual, minimo]) => minimo === null && actual >= 1 && actual <= 2).length;\n\nconst fecha = new Date().toLocaleString('es-CL', { timeZone: 'America/Santiago' });\nconst deficitTotal = alertas.reduce((s, a) => s + a.deficit, 0);\n\nconst tabla = alertas.map(p =>\n  `<tr><td>${p.codigo}</td><td>${p.nombre}</td><td>${p.categoria}</td>` +\n  `<td style=\"text-align:right\">${p.stock_actual}</td>` +\n  `<td style=\"text-align:right\">${p.stock_minimo}</td>` +\n  `<td style=\"text-align:right\"><b>${p.deficit}</b></td></tr>`).join('');\n\nconst html =\n  `<p>Hola Alejandro,</p>` +\n  `<p>El sistema de inventario detectó <b>${alertas.length}</b> producto(s) bajo su stock mínimo ` +\n  `(revisión del ${fecha}). Se necesitan <b>${deficitTotal}</b> unidades para recuperar los mínimos.</p>` +\n  `<table border=\"1\" cellpadding=\"4\" cellspacing=\"0\">` +\n  `<tr><th>Código</th><th>Producto</th><th>Categoría</th><th>Stock</th><th>Mínimo</th><th>Déficit</th></tr>` +\n  tabla + `</table>` +\n  `<p>Ordenados por déficit: los primeros son los más urgentes de reponer.</p>` +\n  `<p><i>Contexto: ${agotados} de ${filas.inventario.length} productos están agotados y ` +\n  `${criticosSinUmbral} tienen 1 o 2 unidades sin stock mínimo definido.</i></p>` +\n  `<p>— Sistema de Inventario Eliko</p>`;\n\nreturn [{ json: {\n  fecha_consulta: fecha,\n  total_productos: filas.producto.length,\n  total_categorias: filas.categoria.length,\n  total_alertas: alertas.length,\n  deficit_total: deficitTotal,\n  productos_agotados: agotados,\n  criticos_sin_umbral: criticosSinUmbral,\n  productos: alertas,\n  asunto: `[Eliko] ${alertas.length} producto(s) bajo stock mínimo`,\n  html,\n}}];\n"
+      },
+      "id": "3b5a6ee4-378c-42ab-9d8c-7f12ede661f2",
+      "name": "Calcular alertas y armar mensaje",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        480,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "350b9bd9-d4d6-428f-933f-07f9d73534b3",
+              "leftValue": "={{ $json.total_alertas }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "58ad2fea-649c-4527-bd79-20f30aca4281",
+      "name": "¿Stock bajo mínimo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        720,
+        100
+      ]
+    },
+    {
+      "parameters": {
+        "sendTo": "CORREO_DESTINO@ejemplo.cl",
+        "subject": "={{ $json.asunto }}",
+        "emailType": "html",
+        "message": "={{ $json.html }}",
+        "options": {}
+      },
+      "id": "6fd0f837-be7f-4cb7-9a26-6e9b5bb0bb73",
+      "name": "Enviar alerta por correo (Gmail)",
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        960,
+        0
+      ]
+    },
+    {
+      "parameters": {},
+      "id": "a5cdac42-120b-49de-b0dc-6362d2b11b83",
+      "name": "Sin alertas: fin",
+      "type": "n8n-nodes-base.noOp",
+      "typeVersion": 1,
+      "position": [
+        960,
+        200
+      ]
+    },
+    {
+      "parameters": {
+        "content": "## Traza BPMN\nEste flujo implementa la salida **Sí** del gateway XOR **¿Stock bajo mínimo?** y la tarea **Generar alerta** del carril *Sistema de Inventario*.\n\nLee `seed.sql` del repositorio y aplica la misma regla que la Consulta 2 de `consultas_analiticas.sql`: `stock_minimo IS NOT NULL AND stock_actual < stock_minimo`.",
+        "height": 240,
+        "width": 440
+      },
+      "id": "ae8d740c-947a-4844-b30c-430a358580bf",
+      "name": "Nota BPMN",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        200,
+        -300
+      ]
+    }
+  ],
+  "connections": {
+    "Ejecución manual": {
+      "main": [
+        [
+          {
+            "node": "Leer base de datos (seed.sql en GitHub)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Todos los días 09:00": {
+      "main": [
+        [
+          {
+            "node": "Leer base de datos (seed.sql en GitHub)",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Leer base de datos (seed.sql en GitHub)": {
+      "main": [
+        [
+          {
+            "node": "Calcular alertas y armar mensaje",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calcular alertas y armar mensaje": {
+      "main": [
+        [
+          {
+            "node": "¿Stock bajo mínimo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "¿Stock bajo mínimo?": {
+      "main": [
+        [
+          {
+            "node": "Enviar alerta por correo (Gmail)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Sin alertas: fin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "pinData": {},
+  "tags": []
+}
