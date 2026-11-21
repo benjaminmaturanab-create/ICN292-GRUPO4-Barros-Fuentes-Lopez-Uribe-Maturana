@@ -99,7 +99,7 @@
     },
     {
       "parameters": {
-        "sendTo": "CORREO_DESTINO@ejemplo.cl",
+        "sendTo": "elikolapicaonline1@gmail.com",
         "subject": "={{ $json.asunto }}",
         "emailType": "html",
         "message": "={{ $json.html }}",
