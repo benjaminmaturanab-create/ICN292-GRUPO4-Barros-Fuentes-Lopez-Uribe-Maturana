@@ -1,18 +1,3 @@
-"""
-separar_sql.py — Divide eliko_db.sql en schema.sql y seed.sql (se ejecuta una sola vez).
-
-El enunciado de la E2 pide dos archivos:
-  - schema.sql: crea la base y sus tablas (PK, FK y restricciones).
-  - seed.sql:   inserta los datos para poder ejecutar las consultas.
-
-Uso (desde la raíz del repositorio):
-    python scripts/separar_sql.py
-    python scripts/separar_sql.py --entrada eliko_db.sql
-
-Revisar ambos archivos después de generarlos y probarlos con:
-    sqlite3 prueba.db < schema.sql
-    sqlite3 prueba.db < seed.sql
-"""
 
 import argparse
 import sqlite3
@@ -20,7 +5,7 @@ from pathlib import Path
 
 RAIZ = Path(__file__).resolve().parent.parent
 
-# Sentencias que definen estructura -> schema.sql. Todo lo demás -> seed.sql
+# Sentencias que definen estructura 
 PREFIJOS_SCHEMA = (
     "CREATE TABLE", "CREATE INDEX", "CREATE UNIQUE INDEX", "CREATE VIEW",
     "CREATE TRIGGER", "DROP TABLE", "DROP INDEX", "DROP VIEW", "DROP TRIGGER",
