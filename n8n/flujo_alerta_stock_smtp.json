@@ -92,8 +92,8 @@
     },
     {
       "parameters": {
-        "fromEmail": "TU_CORREO@gmail.com",
-        "toEmail": "CORREO_DESTINO@ejemplo.cl",
+        "fromEmail": "elikolapicaonline@gmail.com",
+        "toEmail": "elikolapicaonline@gmail.com",
         "subject": "={{ $json.asunto }}",
         "emailFormat": "html",
         "html": "={{ $json.html }}",
