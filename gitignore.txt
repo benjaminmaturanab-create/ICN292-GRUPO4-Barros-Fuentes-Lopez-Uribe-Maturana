@@ -1,0 +1,15 @@
+# Base de datos generada (crear con: sqlite3 db/eliko.db < db/eliko_db.sql)
+db/eliko.db
+
+# Python
+__pycache__/
+*.py[cod]
+.env
+venv/
+.venv/
+
+# macOS
+.DS_Store
+
+# Streamlit cache
+.streamlit/
