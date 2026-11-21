@@ -1,0 +1,17 @@
+
+eliko.db
+*.db
+db/eliko.db
+
+
+__pycache__/
+*.py[cod]
+.env
+venv/
+.venv/
+
+
+.DS_Store
+
+
+.streamlit/
