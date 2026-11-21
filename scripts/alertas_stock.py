@@ -1,21 +1,3 @@
-"""
-alertas_stock.py — Consulta de alertas de reposición para el flujo n8n.
-
-Traza BPMN: gateway "¿Stock bajo mínimo?" -> Sí -> tarea "Generar alerta".
-
-Uso:
-    python scripts/alertas_stock.py                 # usa eliko.db en la raíz del repo
-    python scripts/alertas_stock.py --db ruta/eliko.db
-
-Si eliko.db no existe, la crea a partir de schema.sql + seed.sql
-(o, si no existen, desde eliko_db.sql), igual que app.py.
-Busca eliko.db en la raíz del repo y, si no está, en db/ (igual que app.py).
-
-Salida: un JSON por stdout con la fecha, el total de alertas y la lista
-de productos bajo su stock mínimo, ordenados por déficit (mayor primero).
-Solo usa la biblioteca estándar de Python (sqlite3), por lo que funciona
-en Windows, macOS y Linux sin instalar nada adicional.
-"""
 
 import argparse
 import json
