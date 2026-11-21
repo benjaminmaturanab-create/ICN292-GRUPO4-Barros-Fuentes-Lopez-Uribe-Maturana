@@ -67,3 +67,33 @@ Priorizamos los requisitos con la técnica MoSCoW y los trazamos directamente al
 | RNF06 | El sistema debe poder consultarse desde un dispositivo móvil para verificar el stock durante el embalaje en bodega. | Could | La operación ocurre de forma física, en bodega, y no frente a un computador de escritorio de manera permanente. |
 
 ---
+
+---
+
+## Estado de los requerimientos en la Entrega 2
+
+### Funcionales
+
+| ID | Requisito | Prioridad | Estado E2 | Cómo se cumple / por qué no |
+|---|---|---|---|---|
+| RF01 | Registrar ingreso de mercadería | Must | Parcial | `movimiento_stock` admite ENTRADA con cantidad, fecha y motivo; cada variante es un SKU propio. Falta un formulario en el dashboard (hoy se registra por SQL) |
+| RF02 | Descontar stock al registrar una venta | Must | Parcial | El modelo registra SALIDAS y guarda el stock en `inventario`, pero no hay formulario ni trigger que lo descuente automáticamente; tampoco se guarda el canal |
+| RF03 | Stock consolidado visible para el equipo | Must | Cumplido | Dashboard web con KPIs, stock por categoría y búsqueda por SKU |
+| RF04 | Alerta bajo umbral configurable | Must | Cumplido | `stock_minimo` por producto; alerta en el dashboard y correo diario vía n8n. Hoy solo 2 productos tienen umbral definido |
+| RF05 | Registro manual de ventas | Should | No implementado | El dashboard no tiene formulario de registro |
+| RF06 | Asociar producto con sus publicaciones | Should | Diferido | Requiere las entidades Canal y Publicación |
+| RF07 | Reportes de rotación y cancelaciones | Should | Parcial | Productos sin movimiento y quiebres por categoría; cancelaciones no modeladas |
+| RF08 | Motivo de cada cancelación | Could | Diferido | Depende de Venta/Cancelación |
+| RF09 | Priorizar reposición | Could | Parcial | Alertas ordenadas por unidades a reponer y consulta de productos críticos sin umbral |
+| RF10 | Integración vía API con cada plataforma | Won't | Diferido | Fuera de alcance desde la E1 |
+
+### No funcionales
+
+| ID | Requisito | Estado E2 | Evidencia |
+|---|---|---|---|
+| RNF01 | Disponibilidad en horario de trabajo | Cumplido | Desplegado en Streamlit Community Cloud |
+| RNF02 | Registrar en pocos pasos, sin capacitación técnica | Parcial | Dashboard simple de consultar; el registro de movimientos aún requiere SQL |
+| RNF03 | Consulta de stock inmediata | Cumplido | SQLite responde al instante con 767 productos |
+| RNF04 | Protección de datos (Ley 21.719) | Parcial | No se guardan datos de clientes; falta autenticación |
+| RNF05 | Soportar el volumen y su crecimiento | Cumplido | Volumen actual bajo; PostgreSQL como opción futura |
+| RNF06 | Consulta desde el celular | Cumplido | Aplicación web accesible desde el navegador |

@@ -52,3 +52,19 @@ en tiempo real el stock disponible por producto y variante, registrar entradas
 y salidas, y alertar cuando un producto esté por agotarse. El sistema busca 
 eliminar la actualización manual entre plataformas y reducir las cancelaciones 
 por falta de stock.
+
+---
+
+## Entrega 2: alcance implementado
+
+En la Entrega 2 se construyó la base del inventario centralizado: el equipo levantó en terreno el inventario completo de la bodega y lo cargó en una base de datos relacional con un dashboard de seguimiento y alertas.
+
+| Dato (inventario en terreno, oct–nov 2026) | Valor |
+|---|---|
+| Productos (SKU) | 767 |
+| Categorías | 17 |
+| Unidades en bodega | 8.964 |
+| Productos agotados (stock 0) | 308 (40%) |
+| Productos con stock mínimo definido | 2 |
+
+La integración con los canales de venta (Mercado Libre, Falabella, web) queda como siguiente etapa. El detalle de qué cambió respecto de la E1 está en [`../CHANGELOG.md`](../CHANGELOG.md).

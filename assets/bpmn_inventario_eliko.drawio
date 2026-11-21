@@ -1,0 +1,218 @@
+<mxfile host="app.diagrams.net" modified="2026-11-14T23:00:00.000Z" agent="Claude" version="21.0.0" type="device">
+  <diagram name="Gestión de Inventario — Eliko Bodega" id="eliko-inventario-bpmn">
+    <mxGraphModel dx="1422" dy="762" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1654" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- ═══════════════════════════════════════════════════════════
+             POOL: Eliko Bodega
+        ═══════════════════════════════════════════════════════════ -->
+        <mxCell id="pool" value="Eliko Bodega — Gestión de Inventario" style="shape=pool;startSize=20;horizontal=1;childLayout=stackLayout;horizontalStack=0;resizeParent=1;resizeParentMax=0;collapsible=0;marginBottom=0;swimlaneHead=0;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;fontSize=12;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1560" height="560" as="geometry" />
+        </mxCell>
+
+        <!-- ─── LANE: Encargado de Bodega ─── -->
+        <mxCell id="lane1" value="Encargado de Bodega" style="swimlane;startSize=30;horizontal=0;fillColor=#fff2cc;strokeColor=#d6b656;fontStyle=1;fontSize=11;" vertex="1" parent="pool">
+          <mxGeometry x="0" y="20" width="1560" height="260" as="geometry" />
+        </mxCell>
+
+        <!-- ─── LANE: Sistema de Inventario ─── -->
+        <mxCell id="lane2" value="Sistema de Inventario" style="swimlane;startSize=30;horizontal=0;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;fontSize=11;" vertex="1" parent="pool">
+          <mxGeometry x="0" y="280" width="1560" height="260" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             LANE 1 — ENCARGADO DE BODEGA
+        ═══════════════════════════════════════════════════════════ -->
+
+        <!-- START EVENT -->
+        <mxCell id="start" value="Recibe&#xa;mercadería&#xa;/ solicitud" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="60" y="100" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Verificar producto en sistema -->
+        <mxCell id="t1" value="Verificar producto&#xa;en sistema" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="170" y="90" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- GW: ¿Existe en sistema? -->
+        <mxCell id="gw1" value="¿Existe&#xa;en sistema?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="350" y="85" width="100" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Registrar nuevo producto -->
+        <mxCell id="t2" value="Registrar nuevo&#xa;producto (SKU,&#xa;nombre, categoría)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="340" y="10" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Registrar entrada de stock -->
+        <mxCell id="t3" value="Registrar entrada&#xa;de stock" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="510" y="90" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Realizar despacho / salida -->
+        <mxCell id="t4" value="Realizar despacho&#xa;/ registrar salida" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="700" y="90" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- GW: ¿Stock bajo mínimo? -->
+        <mxCell id="gw2" value="¿Stock bajo&#xa;mínimo?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="890" y="85" width="100" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Generar orden de reposición -->
+        <mxCell id="t5" value="Generar orden&#xa;de reposición" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="880" y="10" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Imprimir etiqueta código de barras -->
+        <mxCell id="t6" value="Imprimir etiqueta&#xa;código de barras" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="1050" y="90" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Etiquetar producto en bodega -->
+        <mxCell id="t7" value="Etiquetar producto&#xa;en bodega" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="1240" y="90" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- END EVENT -->
+        <mxCell id="end" value="Proceso&#xa;completado" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=3;fontSize=10;" vertex="1" parent="lane1">
+          <mxGeometry x="1430" y="100" width="60" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             LANE 2 — SISTEMA DE INVENTARIO
+        ═══════════════════════════════════════════════════════════ -->
+
+        <!-- TASK: Buscar SKU en BD -->
+        <mxCell id="s1" value="Buscar SKU&#xa;en base de datos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="lane2">
+          <mxGeometry x="170" y="100" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Crear registro producto -->
+        <mxCell id="s2" value="Crear registro en&#xa;tabla producto e&#xa;inventario" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="lane2">
+          <mxGeometry x="340" y="20" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: INSERT movimiento ENTRADA -->
+        <mxCell id="s3" value="INSERT movimiento_stock&#xa;tipo: ENTRADA&#xa;Actualizar stock_actual" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="lane2">
+          <mxGeometry x="510" y="100" width="130" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: INSERT movimiento SALIDA -->
+        <mxCell id="s4" value="INSERT movimiento_stock&#xa;tipo: SALIDA&#xa;Actualizar stock_actual" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="lane2">
+          <mxGeometry x="700" y="100" width="130" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Verificar stock vs mínimo -->
+        <mxCell id="s5" value="Verificar stock_actual&#xa;vs stock_minimo&#xa;(Q1 — Alertas)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="lane2">
+          <mxGeometry x="890" y="100" width="130" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Generar alerta en dashboard -->
+        <mxCell id="s6" value="Generar alerta&#xa;en dashboard KPI" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;fontSize=10;" vertex="1" parent="lane2">
+          <mxGeometry x="880" y="190" width="130" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- TASK: Generar etiqueta HTML -->
+        <mxCell id="s7" value="Generar etiqueta&#xa;HTML con código&#xa;de barras (SKU)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontSize=10;" vertex="1" parent="lane2">
+          <mxGeometry x="1050" y="100" width="130" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             EDGES — LANE 1
+        ═══════════════════════════════════════════════════════════ -->
+
+        <mxCell id="e1" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="start" target="t1" parent="lane1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="t1" target="gw1" parent="lane1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="No" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="gw1" target="t2" parent="lane1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="400" y="30" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e4" value="Sí" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="gw1" target="t3" parent="lane1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="t2" target="t3" parent="lane1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="405" y="30" /><mxPoint x="575" y="30" /><mxPoint x="575" y="90" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e6" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="t3" target="t4" parent="lane1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="t4" target="gw2" parent="lane1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="Sí" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="gw2" target="t5" parent="lane1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="940" y="30" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e9" value="No" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="gw2" target="t6" parent="lane1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="t5" target="t6" parent="lane1">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points"><mxPoint x="1010" y="30" /><mxPoint x="1115" y="30" /><mxPoint x="1115" y="90" /></Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="e11" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="t6" target="t7" parent="lane1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="t7" target="end" parent="lane1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             EDGES — LANE 2
+        ═══════════════════════════════════════════════════════════ -->
+
+        <mxCell id="e20" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s3" target="s5" parent="lane2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e21" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s4" target="s5" parent="lane2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e22" style="edgeStyle=orthogonalEdgeStyle;" edge="1" source="s5" target="s6" parent="lane2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- ═══════════════════════════════════════════════════════════
+             EDGES — CROSS-LANE (lane1 → lane2)
+        ═══════════════════════════════════════════════════════════ -->
+
+        <!-- t1 triggers s1 -->
+        <mxCell id="cx1" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="t1" target="s1" parent="pool">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- t2 triggers s2 -->
+        <mxCell id="cx2" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="t2" target="s2" parent="pool">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- t3 triggers s3 -->
+        <mxCell id="cx3" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="t3" target="s3" parent="pool">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- t4 triggers s4 -->
+        <mxCell id="cx4" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="t4" target="s4" parent="pool">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- s5 feeds gw2 -->
+        <mxCell id="cx5" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="s5" target="gw2" parent="pool">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <!-- t6 triggers s7 -->
+        <mxCell id="cx6" style="edgeStyle=orthogonalEdgeStyle;dashed=1;endArrow=open;endFill=0;" edge="1" source="t6" target="s7" parent="pool">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

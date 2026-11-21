@@ -1,0 +1,9 @@
+Repositorio: https://github.com/benjaminmaturanab-create/ICN292-GRUPO4-Barros-Fuentes-Lopez-Uribe-Maturana
+Version defendida: v1.0-e2
+Commit: COMPLETAR (hash del commit al que apunta el tag v1.0-e2)
+
+Para crear el tag desde GitHub web:
+  Releases > Draft a new release > Choose a tag: v1.0-e2 > Create new tag > Publish release
+Para crearlo desde la terminal:
+  git tag v1.0-e2
+  git push origin v1.0-e2
